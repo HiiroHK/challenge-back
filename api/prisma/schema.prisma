@@ -59,10 +59,11 @@ model  collaborator {
   id String @id @default(uuid())
   name String 
   phoneNumber String
-  email String
+  email String @unique
   wage Float
   sector String
   status StatusCollaborator
+  password String? @unique
   createdAt DateTime @default(now())
 }
 

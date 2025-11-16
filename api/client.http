@@ -2,14 +2,24 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
- "name": "Vanessa Samuel",
+ "name": "Gabriel",
  "phoneNumber": "329434343",
- "email": "vanessamuel@gmail.com",
+ "email": "gabrielsresende18@gmail.com",
  "wage": 5500, 
  "sector": "Tecnologia" ,
- "status": "ATIVO"
+ "status": "ATIVO",
+ "password": "gabriel1"
  
 }
 
 ###
 GET http://localhost:3000/users
+
+###
+POST http://localhost:3000/autenticate
+Content-Type: application/json
+
+{
+  "email": "gabrielsresende18@gmail.com",
+  "password": "gabriel1"
+}
