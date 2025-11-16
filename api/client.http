@@ -1,0 +1,15 @@
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+ "name": "Vanessa Samuel",
+ "phoneNumber": "329434343",
+ "email": "vanessamuel@gmail.com",
+ "wage": 5500, 
+ "sector": "Tecnologia" ,
+ "status": "ATIVO"
+ 
+}
+
+###
+GET http://localhost:3000/users

@@ -1,0 +1,904 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Mariana Silva",
+      "email": "mariana.silva@gmail.com",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "name": "João Oliveira",
+      "email": "joao.oliveira@gmail.com",
+      "password": "abc123",
+      "role": "aluno"
+    },
+    {
+      "id": "3",
+      "name": "Ana Costa",
+      "email": "ana.costa@gmail.com",
+      "password": "senha123",
+      "role": "instrutor"
+    },
+    {
+      "id": "4",
+      "name": "Carlos Souza",
+      "email": "carlos.souza@gmail.com",
+      "password": "qwerty",
+      "role": "financeiro"
+    },
+    {
+      "id": "5",
+      "name": "Luciana Dias",
+      "email": "luciana.dias@gmail.com",
+      "password": "luc123",
+      "role": "suporte"
+    },
+    {
+      "id": "6",
+      "name": "Fernanda Rocha",
+      "email": "fernanda.rocha@gmail.com",
+      "password": "pass456",
+      "role": "aluno"
+    },
+    {
+      "id": "7",
+      "name": "Rafael Lima",
+      "email": "rafael.lima@gmail.com",
+      "password": "limarafa",
+      "role": "instrutor"
+    },
+    {
+      "id": "8",
+      "name": "Bianca Mendes",
+      "email": "bianca.mendes@gmail.com",
+      "password": "mendes2024",
+      "role": "financeiro"
+    },
+    {
+      "id": "9",
+      "name": "Rodrigo Cunha",
+      "email": "rodrigo.cunha@gmail.com",
+      "password": "cunha321",
+      "role": "admin"
+    },
+    {
+      "id": "10",
+      "name": "Camila Prado",
+      "email": "camila.prado@gmail.com",
+      "password": "camila123",
+      "role": "aluno"
+    },
+    {
+      "id": "11",
+      "name": "Marcos Vieira",
+      "email": "marcos.vieira@gmail.com",
+      "password": "vieira999",
+      "role": "instrutor"
+    },
+    {
+      "id": "12",
+      "name": "Juliana Martins",
+      "email": "juliana.martins@gmail.com",
+      "password": "juliana2024",
+      "role": "suporte"
+    },
+    {
+      "id": "13",
+      "name": "Thiago Nogueira",
+      "email": "thiago.nogueira@gmail.com",
+      "password": "thi123",
+      "role": "aluno"
+    },
+    {
+      "id": "14",
+      "name": "Patrícia Lima",
+      "email": "patricia.lima@gmail.com",
+      "password": "pat2025",
+      "role": "financeiro"
+    },
+    {
+      "id": "15",
+      "name": "Vinícius Tavares",
+      "email": "vinicius.tavares@gmail.com",
+      "password": "vin123",
+      "role": "instrutor"
+    },
+    {
+      "id": "16",
+      "name": "Isabela Ferreira",
+      "email": "isabela.ferreira@gmail.com",
+      "password": "ferreira1",
+      "role": "aluno"
+    },
+    {
+      "id": "17",
+      "name": "Eduardo Barbosa",
+      "email": "eduardo.barbosa@gmail.com",
+      "password": "edbarb",
+      "role": "admin"
+    },
+    {
+      "id": "18",
+      "name": "Tatiane Lima",
+      "email": "tatiane.lima@gmail.com",
+      "password": "tatilima",
+      "role": "suporte"
+    },
+    {
+      "id": "19",
+      "name": "Gustavo Andrade",
+      "email": "gustavo.andrade@gmail.com",
+      "password": "andrade88",
+      "role": "instrutor"
+    },
+    {
+      "id": "20",
+      "name": "Débora Reis",
+      "email": "debora.reis@gmail.com",
+      "password": "deb2025",
+      "role": "financeiro"
+    }
+  ],
+
+  "Vendas": [
+    {
+      "id": "1",
+      "nome": "Jeferson Silva",
+      "email": "jeferson@gmail.com",
+      "telefone": "(11) 91111-1111",
+      "curso": "Frontend",
+      "valor": 1500,
+      "data": "2022-01-05"
+    },
+    {
+      "id": "2",
+      "nome": "Ana Costa",
+      "email": "ana.costa@gmail.com",
+      "telefone": "(21) 92222-2222",
+      "curso": "Backend",
+      "valor": 1200,
+      "data": "2022-01-15"
+    },
+    {
+      "id": "3",
+      "nome": "Carlos Almeida",
+      "email": "carlos@gmail.com",
+      "telefone": "(31) 93333-3333",
+      "curso": "Fullstack",
+      "valor": 2000,
+      "data": "2022-02-10"
+    },
+    {
+      "id": "4",
+      "nome": "Bruna Lima",
+      "email": "bruna@gmail.com",
+      "telefone": "(41) 94444-4444",
+      "curso": "Data Science",
+      "valor": 1800,
+      "data": "2022-03-01"
+    },
+    {
+      "id": "5",
+      "nome": "Marcos Souza",
+      "email": "marcos@gmail.com",
+      "telefone": "(51) 95555-5555",
+      "curso": "Frontend",
+      "valor": 1600,
+      "data": "2022-04-08"
+    },
+    {
+      "id": "6",
+      "nome": "Luciana Reis",
+      "email": "luciana@gmail.com",
+      "telefone": "(61) 96666-6666",
+      "curso": "DevOps",
+      "valor": 1700,
+      "data": "2022-05-20"
+    },
+    {
+      "id": "7",
+      "nome": "João Mendes",
+      "email": "joao@gmail.com",
+      "telefone": "(71) 97777-7777",
+      "curso": "Backend",
+      "valor": 1300,
+      "data": "2022-06-15"
+    },
+    {
+      "id": "8",
+      "nome": "Renata Silva",
+      "email": "renata@gmail.com",
+      "telefone": "(81) 98888-8888",
+      "curso": "Frontend",
+      "valor": 1550,
+      "data": "2022-07-01"
+    },
+    {
+      "id": "9",
+      "nome": "Fábio Rocha",
+      "email": "fabio@gmail.com",
+      "telefone": "(91) 99999-9999",
+      "curso": "Data Science",
+      "valor": 1900,
+      "data": "2022-08-12"
+    },
+    {
+      "id": "10",
+      "nome": "Camila Martins",
+      "email": "camila@gmail.com",
+      "telefone": "(11) 90000-0000",
+      "curso": "Fullstack",
+      "valor": 2100,
+      "data": "2022-09-03"
+    },
+    {
+      "id": "11",
+      "nome": "Pedro Alves",
+      "email": "pedro@gmail.com",
+      "telefone": "(21) 91111-2222",
+      "curso": "Backend",
+      "valor": 1400,
+      "data": "2022-10-25"
+    },
+    {
+      "id": "12",
+      "nome": "Thais Souza",
+      "email": "thais@gmail.com",
+      "telefone": "(31) 92222-3333",
+      "curso": "Frontend",
+      "valor": 1350,
+      "data": "2022-11-07"
+    },
+    {
+      "id": "13",
+      "nome": "Daniela Cruz",
+      "email": "daniela@gmail.com",
+      "telefone": "(41) 93333-4444",
+      "curso": "Fullstack",
+      "valor": 2000,
+      "data": "2022-12-18"
+    },
+    {
+      "id": "14",
+      "nome": "Gustavo Dias",
+      "email": "gustavo@gmail.com",
+      "telefone": "(51) 94444-5555",
+      "curso": "DevOps",
+      "valor": 1650,
+      "data": "2023-01-12"
+    },
+    {
+      "id": "15",
+      "nome": "Priscila Moreira",
+      "email": "priscila@gmail.com",
+      "telefone": "(61) 95555-6666",
+      "curso": "Frontend",
+      "valor": 1500,
+      "data": "2023-02-14"
+    },
+    {
+      "id": "16",
+      "nome": "Eduardo Borges",
+      "email": "eduardo@gmail.com",
+      "telefone": "(71) 96666-7777",
+      "curso": "Data Science",
+      "valor": 1800,
+      "data": "2023-03-03"
+    },
+    {
+      "id": "17",
+      "nome": "Vanessa Gomes",
+      "email": "vanessa@gmail.com",
+      "telefone": "(81) 97777-8888",
+      "curso": "Backend",
+      "valor": 1450,
+      "data": "2023-04-08"
+    },
+    {
+      "id": "18",
+      "nome": "Rodrigo Santos",
+      "email": "rodrigo@gmail.com",
+      "telefone": "(91) 98888-9999",
+      "curso": "Frontend",
+      "valor": 1400,
+      "data": "2023-05-23"
+    },
+    {
+      "id": "19",
+      "nome": "Letícia Barros",
+      "email": "leticia@gmail.com",
+      "telefone": "(11) 90001-0001",
+      "curso": "Fullstack",
+      "valor": 1950,
+      "data": "2023-06-17"
+    },
+    {
+      "id": "20",
+      "nome": "Felipe Nogueira",
+      "email": "felipe@gmail.com",
+      "telefone": "(21) 91112-2223",
+      "curso": "DevOps",
+      "valor": 1700,
+      "data": "2023-07-25"
+    },
+    {
+      "id": "21",
+      "nome": "Aline Cardoso",
+      "email": "aline@gmail.com",
+      "telefone": "(31) 92223-3334",
+      "curso": "Frontend",
+      "valor": 1600,
+      "data": "2023-08-06"
+    },
+    {
+      "id": "22",
+      "nome": "Lucas Araújo",
+      "email": "lucas@gmail.com",
+      "telefone": "(41) 93334-4445",
+      "curso": "Backend",
+      "valor": 1250,
+      "data": "2023-09-14"
+    },
+    {
+      "id": "23",
+      "nome": "Sabrina Fernandes",
+      "email": "sabrina@gmail.com",
+      "telefone": "(51) 94445-5556",
+      "curso": "Data Science",
+      "valor": 1850,
+      "data": "2023-10-28"
+    },
+    {
+      "id": "24",
+      "nome": "Henrique Lima",
+      "email": "henrique@gmail.com",
+      "telefone": "(61) 95556-6667",
+      "curso": "Fullstack",
+      "valor": 2050,
+      "data": "2023-11-19"
+    },
+    {
+      "id": "25",
+      "nome": "Bianca Castro",
+      "email": "bianca@gmail.com",
+      "telefone": "(71) 96667-7778",
+      "curso": "Frontend",
+      "valor": 1550,
+      "data": "2023-12-29"
+    },
+    {
+      "id": "26",
+      "nome": "Joana Ribeiro",
+      "email": "joana@gmail.com",
+      "telefone": "(81) 97778-8889",
+      "curso": "DevOps",
+      "valor": 1600,
+      "data": "2024-01-03"
+    },
+    {
+      "id": "27",
+      "nome": "Alex Pereira",
+      "email": "alex@gmail.com",
+      "telefone": "(91) 98889-9990",
+      "curso": "Frontend",
+      "valor": 1450,
+      "data": "2024-01-20"
+    },
+    {
+      "id": "28",
+      "nome": "Tatiane Luz",
+      "email": "tatiane@gmail.com",
+      "telefone": "(11) 90002-0002",
+      "curso": "Data Science",
+      "valor": 1750,
+      "data": "2024-02-08"
+    },
+    {
+      "id": "29",
+      "nome": "Ricardo Teixeira",
+      "email": "ricardo@gmail.com",
+      "telefone": "(21) 91113-2224",
+      "curso": "Fullstack",
+      "valor": 2000,
+      "data": "2024-03-04"
+    },
+    {
+      "id": "30",
+      "nome": "Débora Lima",
+      "email": "debora@gmail.com",
+      "telefone": "(31) 92224-3335",
+      "curso": "Backend",
+      "valor": 1350,
+      "data": "2024-04-18"
+    },
+    {
+      "id": "31",
+      "nome": "Fernando Rocha",
+      "email": "fernando@gmail.com",
+      "telefone": "(41) 93335-4446",
+      "curso": "Frontend",
+      "valor": 1500,
+      "data": "2024-05-25"
+    },
+    {
+      "id": "32",
+      "nome": "Larissa Martins",
+      "email": "larissa@gmail.com",
+      "telefone": "(51) 94446-5557",
+      "curso": "DevOps",
+      "valor": 1650,
+      "data": "2024-06-07"
+    },
+    {
+      "id": "33",
+      "nome": "André Gonçalves",
+      "email": "andre@gmail.com",
+      "telefone": "(61) 95557-6668",
+      "curso": "Backend",
+      "valor": 1400,
+      "data": "2024-07-13"
+    },
+    {
+      "id": "34",
+      "nome": "Nathalia Souza",
+      "email": "nathalia@gmail.com",
+      "telefone": "(71) 96668-7779",
+      "curso": "Data Science",
+      "valor": 1850,
+      "data": "2024-08-01"
+    },
+    {
+      "id": "35",
+      "nome": "Samuel Ribeiro",
+      "email": "samuel@gmail.com",
+      "telefone": "(81) 97779-8890",
+      "curso": "Fullstack",
+      "valor": 1950,
+      "data": "2024-09-15"
+    },
+    {
+      "id": "36",
+      "nome": "Jessica Melo",
+      "email": "jessica@gmail.com",
+      "telefone": "(91) 98880-9991",
+      "curso": "Frontend",
+      "valor": 1500,
+      "data": "2024-10-30"
+    },
+    {
+      "id": "37",
+      "nome": "Douglas Ramos",
+      "email": "douglas@gmail.com",
+      "telefone": "(11) 90003-0003",
+      "curso": "DevOps",
+      "valor": 1700,
+      "data": "2024-11-22"
+    },
+    {
+      "id": "38",
+      "nome": "Patrícia Vieira",
+      "email": "patricia@gmail.com",
+      "telefone": "(21) 91114-2225",
+      "curso": "Backend",
+      "valor": 1300,
+      "data": "2024-12-10"
+    },
+    {
+      "id": "39",
+      "nome": "Rogério Cunha",
+      "email": "rogerio@gmail.com",
+      "telefone": "(31) 92225-3336",
+      "curso": "Frontend",
+      "valor": 1450,
+      "data": "2025-01-06"
+    }
+  ],
+
+  "despesas": [
+    {
+      "id": "1",
+      "descrição": "Aluguel",
+      "valor": 1200,
+      "data": "2022-01-05",
+      "tipo": "Fixa",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "2",
+      "descrição": "Luz",
+      "valor": 95.5,
+      "data": "2022-01-15",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+    {
+      "id": "3",
+      "descrição": "Internet",
+      "valor": 110,
+      "data": "2022-01-20",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "4",
+      "descrição": "Água",
+      "valor": 80,
+      "data": "2022-02-10",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "5",
+      "descrição": "Produtos de Limpeza",
+      "valor": 150,
+      "data": "2022-02-15",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Débito"
+    },
+    {
+      "id": "6",
+      "descrição": "Alimentos",
+      "valor": 300,
+      "data": "2022-03-03",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "7",
+      "descrição": "Manutenção",
+      "valor": 250,
+      "data": "2022-03-12",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "8",
+      "descrição": "Telefone",
+      "valor": 85,
+      "data": "2022-04-01",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "9",
+      "descrição": "Folha de pagamento",
+      "valor": 2000,
+      "data": "2022-04-15",
+      "tipo": "Fixa",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "10",
+      "descrição": "Material de Escritório",
+      "valor": 175,
+      "data": "2022-04-28",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "11",
+      "descrição": "Aluguel",
+      "valor": 1250,
+      "data": "2022-05-01",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "12",
+      "descrição": "Energia Elétrica",
+      "valor": 97.5,
+      "data": "2022-05-09",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+    {
+      "id": "13",
+      "descrição": "Streaming",
+      "valor": 39.9,
+      "data": "2022-05-20",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "14",
+      "descrição": "Combustível",
+      "valor": 250,
+      "data": "2022-06-02",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "15",
+      "descrição": "Internet",
+      "valor": 120,
+      "data": "2022-06-15",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "16",
+      "descrição": "Serviço de limpeza",
+      "valor": 200,
+      "data": "2022-06-25",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "17",
+      "descrição": "Água",
+      "valor": 88.9,
+      "data": "2022-07-08",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "18",
+      "descrição": "Manutenção Elétrica",
+      "valor": 320,
+      "data": "2022-07-22",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "19",
+      "descrição": "Cursos",
+      "valor": 450,
+      "data": "2022-08-01",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "20",
+      "descrição": "Luz",
+      "valor": 98.4,
+      "data": "2022-08-13",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+
+    {
+      "id": "21",
+      "descrição": "Aluguel",
+      "valor": 1350,
+      "data": "2023-01-10",
+      "tipo": "Fixa",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "22",
+      "descrição": "Luz",
+      "valor": 100.7,
+      "data": "2023-01-15",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "23",
+      "descrição": "Água",
+      "valor": 90.2,
+      "data": "2023-02-04",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+    {
+      "id": "24",
+      "descrição": "Internet",
+      "valor": 115.9,
+      "data": "2023-02-11",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "25",
+      "descrição": "Alimentos",
+      "valor": 320,
+      "data": "2023-03-05",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "26",
+      "descrição": "Combustível",
+      "valor": 270,
+      "data": "2023-03-18",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "27",
+      "descrição": "Remédios",
+      "valor": 80,
+      "data": "2023-04-03",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "28",
+      "descrição": "Material de Limpeza",
+      "valor": 140,
+      "data": "2023-04-19",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "29",
+      "descrição": "Telefone",
+      "valor": 90,
+      "data": "2023-05-01",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "30",
+      "descrição": "Folha de Pagamento",
+      "valor": 2200,
+      "data": "2023-05-30",
+      "tipo": "Fixa",
+      "formaPagamento": "Dinheiro"
+    },
+
+    {
+      "id": "31",
+      "descrição": "Aluguel",
+      "valor": 1400,
+      "data": "2024-01-05",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "32",
+      "descrição": "Água",
+      "valor": 95,
+      "data": "2024-01-12",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "33",
+      "descrição": "Internet",
+      "valor": 110,
+      "data": "2024-01-20",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "34",
+      "descrição": "Remédios",
+      "valor": 130,
+      "data": "2024-02-03",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "35",
+      "descrição": "Alimentos",
+      "valor": 350,
+      "data": "2024-02-22",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "36",
+      "descrição": "Transporte",
+      "valor": 210,
+      "data": "2024-03-01",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "37",
+      "descrição": "Serviços Bancários",
+      "valor": 45,
+      "data": "2024-03-15",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+    {
+      "id": "38",
+      "descrição": "Consultoria",
+      "valor": 800,
+      "data": "2024-04-05",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "39",
+      "descrição": "Streaming",
+      "valor": 49.9,
+      "data": "2024-04-23",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "40",
+      "descrição": "Telefone",
+      "valor": 95,
+      "data": "2024-05-18",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Débito"
+    },
+
+    {
+      "id": "41",
+      "descrição": "Aluguel",
+      "valor": 1450,
+      "data": "2025-01-03",
+      "tipo": "Fixa",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "42",
+      "descrição": "Luz",
+      "valor": 100.5,
+      "data": "2025-01-14",
+      "tipo": "Fixa",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "43",
+      "descrição": "Água",
+      "valor": 92.3,
+      "data": "2025-01-27",
+      "tipo": "Fixa",
+      "formaPagamento": "Débito"
+    },
+    {
+      "id": "44",
+      "descrição": "Internet",
+      "valor": 119.9,
+      "data": "2025-02-07",
+      "tipo": "Fixa",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "45",
+      "descrição": "Combustível",
+      "valor": 280,
+      "data": "2025-02-21",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "46",
+      "descrição": "Farmácia",
+      "valor": 100,
+      "data": "2025-03-04",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "47",
+      "descrição": "Cursos Online",
+      "valor": 500,
+      "data": "2025-03-28",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    },
+    {
+      "id": "48",
+      "descrição": "Manutenção Elétrica",
+      "valor": 350,
+      "data": "2025-04-11",
+      "tipo": "Variável",
+      "formaPagamento": "Dinheiro"
+    },
+    {
+      "id": "49",
+      "descrição": "Material Escolar",
+      "valor": 220,
+      "data": "2025-05-02",
+      "tipo": "Variável",
+      "formaPagamento": "Cartão de Crédito"
+    },
+    {
+      "id": "50",
+      "descrição": "Produtos de Limpeza",
+      "valor": 160,
+      "data": "2025-06-10",
+      "tipo": "Variável",
+      "formaPagamento": "Pix"
+    }
+  ]
+}

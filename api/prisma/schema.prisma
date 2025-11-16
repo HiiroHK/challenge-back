@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Expenses {
+  id String @id @default(uuid())
+  name String
+  description String
+  value Float
+  type String
+  date DateTime 
+}
+//tabela de Cursos
+model Courses {
+  id String @id @default(uuid())
+  image String?
+  status Status
+  name String
+  description String
+  value Float
+
+  sale Sale[]
+} 
+//enum da modalidade
+enum Status {
+  ATIVO
+  INATIVO
+}
+//tabela de Vendas
+model Sale {
+  id String @id @default(uuid())
+  modalidade    Modalidade
+  courseId      String
+  nomeAluno     String
+  email         String
+  telefone      String?
+  valorBruto    Float
+  valorLiquido  Float
+  dataVenda     DateTime   @default(now())
+  course Courses    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+}
+
+enum Modalidade {
+  ONLINE
+  PRESENCIAL
+}
+
+model  collaborator {
+  id String @id @default(uuid())
+  name String 
+  phoneNumber String
+  email String
+  wage Float
+  sector String
+  status StatusCollaborator
+  createdAt DateTime @default(now())
+}
+
+enum StatusCollaborator {
+ATIVO
+INATIVO
+FERIAS
+}
+
+model Franchises {
+  id String @id @default(uuid())
+  name String
+  city String
+  state String
+  responsible String
+  phoneNumber String 
+  email String
+  createdAt DateTime @default(now())
+  status StatusFranchises
+}
+
+enum StatusFranchises {
+  ATIVO
+  INATIVO
+}

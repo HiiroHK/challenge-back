@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "1- autenticação- admin e master\r 2 crud vendas\r 3 graficos\r 4 crud despesas\r 5 crud membros\r 6 config -perfil-=segurança\r 7 refatoração",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsx watch apps/src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "prisma": "^6.18.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.1.0",
+    "@fastify/jwt": "^10.0.0",
+    "@prisma/client": "^6.19.0",
+    "@types/node": "^24.9.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fastify": "^5.6.1",
+    "zod": "^4.1.12"
+  }
+}
