@@ -20,6 +20,17 @@ POST http://localhost:3000/autenticate
 Content-Type: application/json
 
 {
-  "email": "gabrielsresende18@gmail.com",
-  "password": "gabriel1"
+  "email": "vanessamuel@gmail.com",
+  "password": "vanessa1"
+}
+
+//franchises
+
+###
+PUT http://localhost:3000/franchises
+Content-Type: application/json
+
+{
+  "email": "vanessamuel@gmail.com",
+  "password": "vanessa1"
 }
