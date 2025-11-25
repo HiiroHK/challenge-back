@@ -20,8 +20,8 @@ POST http://localhost:3000/autenticate
 Content-Type: application/json
 
 {
-  "email": "vanessamuel@gmail.com",
-  "password": "vanessa1"
+  "email": "jandeffigueiredo@gmail.com",
+  "password": "jande"
 }
 
 //franchises
