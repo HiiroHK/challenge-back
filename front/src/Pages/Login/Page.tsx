@@ -1,32 +1,46 @@
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-
 import codiCashLogo from "../../assests/codiCashLogo.png";
-
-import { useNavigate } from "react-router-dom";
-
 import { Mail, LockKeyhole } from "lucide-react";
 import { useState } from "react";
-import { fakeLogin } from "@/services/authService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postauthenticate } from "@/http/postAuthenticate";
+import { AxiosError } from "axios";
 
 type FormData = {
   email: string;
   password: string;
 };
 export function Login() {
-  const navigate = useNavigate();
-
   const [, setLoading] = useState(false);
   const { register, handleSubmit } = useForm<FormData>();
+  const queryclient = useQueryClient();
+  const { mutateAsync: postAuthenticateFN } = useMutation({
+    mutationFn: postauthenticate,
+
+    onSuccess: () => {
+      queryclient.invalidateQueries({
+        queryKey: ["auth"],
+      });
+    },
+  });
 
   async function handleLogin(data: FormData) {
     setLoading(true);
     try {
-      const { token } = await fakeLogin(data);
-      localStorage.setItem("authToken", token);
-      navigate("/dashboard");
-    } catch (error: any) {
-      alert(error.message);
+      const { email, password } = data;
+
+      if (!email || !password) {
+        return alert("Email ou senha errados!");
+      }
+      await postAuthenticateFN({
+        email,
+        password,
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     } finally {
       setLoading(false);
     }

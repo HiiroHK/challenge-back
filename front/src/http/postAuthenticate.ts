@@ -1,12 +1,12 @@
 import { api } from "@/lib/axios";
 
-interface getauthenticate {
+interface authenticateprops {
   email: string;
   password: string;
 }
 
-export async function authenticate({ email, password }: getauthenticate) {
-  await api.post("/autenticate", {
+export async function postauthenticate({ email, password }: authenticateprops) {
+  await api.post("/auth", {
     email,
     password,
   });
