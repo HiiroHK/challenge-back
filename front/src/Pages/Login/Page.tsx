@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+/* import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import codiCashLogo from "../../assests/codiCashLogo.png";
+
 import { Mail, LockKeyhole } from "lucide-react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -40,6 +40,49 @@ export function Login() {
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  } */
+import codiCashLogo from "../../assests/codiCashLogo.png";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { postauthenticate } from "@/http/postAuthenticate";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { LockKeyhole, Mail } from "lucide-react";
+
+type FormData = {
+  email: string;
+  password: string;
+};
+
+export function Login() {
+  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit } = useForm<FormData>();
+  const navigate = useNavigate();
+
+  const { mutateAsync: postAuthenticateFN } = useMutation({
+    mutationFn: postauthenticate,
+  });
+
+  async function handleLogin(data: FormData) {
+    setLoading(true);
+    try {
+      const response = await postAuthenticateFN(data);
+
+      // salva token
+      localStorage.setItem("token", response.token);
+
+      // redireciona
+      navigate("/dashboard");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+        alert("Email ou senha inválidos.");
       }
     } finally {
       setLoading(false);
