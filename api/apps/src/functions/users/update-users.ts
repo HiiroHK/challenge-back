@@ -1,11 +1,13 @@
 import express from "express";
 export const router = express.Router();
 import { prisma } from "../../lib/prisma.js";
+import { userSchemaBody } from "../../models/users-models";
 
 router.put("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, phoneNumber, email, wage, sector, status } = req.body;
+    const { name, phoneNumber, email, wage, sector, status, password } =
+      userSchemaBody.parse(req.body);
 
     const updatedUser = await prisma.collaborator.update({
       where: { id },
@@ -16,6 +18,7 @@ router.put("/users/:id", async (req, res) => {
         wage,
         sector,
         status,
+        password,
       },
     });
 

@@ -1,8 +1,8 @@
-import express from 'express'
-export const router = express.Router()
-import { prisma } from '../../lib/prisma.js'
-import { hash } from 'bcryptjs'
-router.post('/users', async (req, res) => {
+import express from "express";
+export const router = express.Router();
+import { prisma } from "../../lib/prisma.js";
+import { hash } from "bcryptjs";
+router.post("/users", async (req, res) => {
   try {
     const {
       name,
@@ -13,8 +13,8 @@ router.post('/users', async (req, res) => {
       status,
       createdAt,
       password,
-    } = req.body
-    const passwordHash = await hash(password, 6)
+    } = req.body;
+    const passwordHash = await hash(password, 6);
     await prisma.collaborator.create({
       data: {
         name,
@@ -26,11 +26,11 @@ router.post('/users', async (req, res) => {
         createdAt,
         password: passwordHash,
       },
-    })
-    return res.status(201).json({ message: 'User created successfully' })
+    });
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     if (error) {
-      console.log(error)
+      console.log(error);
     }
   }
-})
+});

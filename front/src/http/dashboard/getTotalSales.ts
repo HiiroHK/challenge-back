@@ -1,4 +1,4 @@
-import { api } from "../services/api/ApiConfig";
+import { api } from "../../lib/axios";
 export interface totalSalesResponse {
   id: string;
   nome: string;

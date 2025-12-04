@@ -1,56 +1,9 @@
-/* import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-
-import { Mail, LockKeyhole } from "lucide-react";
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postauthenticate } from "@/http/postAuthenticate";
-import { AxiosError } from "axios";
-
-type FormData = {
-  email: string;
-  password: string;
-};
-export function Login() {
-  const [, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm<FormData>();
-  const queryclient = useQueryClient();
-  const { mutateAsync: postAuthenticateFN } = useMutation({
-    mutationFn: postauthenticate,
-
-    onSuccess: () => {
-      queryclient.invalidateQueries({
-        queryKey: ["auth"],
-      });
-    },
-  });
-
-  async function handleLogin(data: FormData) {
-    setLoading(true);
-    try {
-      const { email, password } = data;
-
-      if (!email || !password) {
-        return alert("Email ou senha errados!");
-      }
-      await postAuthenticateFN({
-        email,
-        password,
-      });
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  } */
 import codiCashLogo from "../../assests/codiCashLogo.png";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { postauthenticate } from "@/http/postAuthenticate";
+import { postauthenticate } from "@/http/authenticate/postAuthenticate";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { LockKeyhole, Mail } from "lucide-react";
@@ -74,8 +27,8 @@ export function Login() {
     try {
       const response = await postAuthenticateFN(data);
 
-      // salva token
-      localStorage.setItem("token", response.token);
+      // salva token (nome esperado pelo dashboard)
+      localStorage.setItem("authToken", response.token);
 
       // redireciona
       navigate("/dashboard");

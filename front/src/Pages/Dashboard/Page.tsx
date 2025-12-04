@@ -13,12 +13,15 @@ import { RangeCalendar } from "@/components/Dashboard/RangeCalendar";
 
 import { useEffect, useState } from "react";
 
-import { getTotalSales, type totalSalesResponse } from "@/http/getTotalSales";
+import {
+  getTotalSales,
+  type totalSalesResponse,
+} from "@/http/dashboard/getTotalSales";
 
 import {
   getTotalExpenses,
   type totalExpensesResponse,
-} from "@/http/getTotalExpenses";
+} from "@/http/dashboard/getTotalExpenses";
 import { FiltroPorPeriodo } from "@/components/Dashboard/FiltroPorPeriodo";
 import { ToggleButton } from "../../components/Dashboard/ToggleButton";
 import { useNavigate } from "react-router-dom";

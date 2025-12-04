@@ -1,36 +1,249 @@
+//Users
+
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
- "name": "Gabriel",
- "phoneNumber": "329434343",
- "email": "gabrielsresende18@gmail.com",
- "wage": 5500, 
+ "name": "Jander",
+ "phoneNumber": "3294343431",
+ "email": "jander@gmail.com",
+ "wage": 5000, 
  "sector": "Tecnologia" ,
  "status": "ATIVO",
- "password": "gabriel1"
- 
+ "password": "jander1"
 }
 
 ###
 GET http://localhost:3000/users
+
+
+###
+DELETE http://localhost:3000/users/464dac55-fe1a-4e07-8760-030433f2bbf0
+
+###
+PUT http://localhost:3000/users/e057241f-1c75-48a1-880c-98abc123a22d
+Content-Type: application/json
+
+{
+ "name": "Vanessa",
+ "phoneNumber": "3294343436",
+ "email": "vanessa@gmail.com",
+ "wage": 5000, 
+ "sector": "Tecnologia" ,
+ "status": "ATIVO",
+ "password": "vanessa1"
+}
+
+//HTTP EXPENSES
+
+###
+POST http://localhost:3000/expenses
+Content-Type: application/json 
+
+{
+    "name": "Teste",
+    "description": "Luz RIo branco",
+    "value": 150.5,
+    "type": "Fixa",
+    "date": "2024-10-10"
+
+}
+
+###
+GET http://localhost:3000/expenses
+
+###
+DELETE http://localhost:3000/expenses/2f377f94-fe7c-41be-b47d-57f7c1f1a356
+
+###
+PUT http://localhost:3000/expenses/f0f2ec93-1c04-45bd-af0d-bd92681f5679
+Content-Type: application/json 
+
+{
+    "name": "Reabastecimento",
+    "description": "Lanche",
+    "value": 47.5,
+    "type": "Variavel",
+    "date": "2025-10-12"
+
+}
+
+//Courses 
+
+###
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "image": "fdgdfgdd",
+    "status": "ATIVO",
+    "name": "Javascript",
+    "description": "Curso para quem quer aprender a progrmar com Java e SpringBoot",
+    "value": 2500
+}
+
+###
+GET http://localhost:3000/courses
+
+###
+
+DELETE http://localhost:3000/courses/22282fbe-a686-41c0-a1d5-d0274b665859
+
+###
+PUT http://localhost:3000/courses/f39b0d1f-4b1e-4a3b-a5c0-8ed0cbba629f
+Content-Type: application/json
+
+{
+    "image": "hhgggfffff",
+    "status": "ATIVO",
+    "name": "Java",
+    "description": "Curso para quem quer aprender a progrmar com Java e SpringBoot",
+    "value": 1500
+}
+
+//HTTP EXPENSES
+
+###
+POST http://localhost:3000/expenses
+Content-Type: application/json 
+
+{
+    "name": "Luz",
+    "description": "Luz São Mateus",
+    "value": 126.5,
+    "type": "Variavel",
+    "date": "2025-10-10"
+
+}
+
+###
+GET http://localhost:3000/expenses
+
+###
+
+DELETE http://localhost:3000/expenses/10bb5412-6c10-48c9-a33d-bcb0b9279bbd
+###
+PUT http://localhost:3000/expenses/46bee814-3aa6-461c-b335-472fc3e58bd7
+Content-Type: application/json 
+
+{
+    "name": "Reabastecimento",
+    "description": "Lanche",
+    "value": 47.5,
+    "type": "Variavel",
+    "date": "2025-10-12"
+
+}
+
+//Franchises
+
+###
+POST http://localhost:3000/franchises
+Content-Type: application/json
+
+{
+    "name": "Unidade Rio Branco",
+    "city": "Juiz de Fora",
+    "state": "Minas Gerais",
+    "responsible":"Yuri",
+    "phoneNumber": "31154545443",
+    "email": "codiriobranco@gmail.com",
+    "status": "ATIVO"
+
+}
+
+###
+GET http://localhost:3000/franchises
+
+###
+PUT http://localhost:3000/franchises/7a086923-1e7e-4d47-a263-9889d56b4d16
+Content-Type: application/json
+
+{
+    "name": "Unidade São Mateus",
+    "city": "Juiz de Fora",
+    "state": "Minas Gerais",
+    "responsible":"Yuri",
+    "phoneNumber": "311545454",
+    "email": "codisaomateus@gmail.com",
+    "status": "INATIVO"
+
+}
+###
+DELETE http://localhost:3000/franchises/b794f6de-5b02-4375-9859-e7c4a9c6fc78
+
+
+// HTTP SALES
+###
+GET http://localhost:3000/sales
+
+####
+POST http://localhost:3000/sales
+Content-Type: application/json
+
+{
+    "modalidade": "ONLINE",
+    "coursedId": "e1c44acf-5e86-456b-9cd5-329a335cb210",
+    "nomeAluno": "Jander",
+    "email": "trerfrer@teste.com",
+    "telefone": "32554errrgff",
+    "valorBruto": 1500,
+    "valorLiquido":1356
+
+}
+
+###
+DELETE http://localhost:3000/sales/19c6b461-b0a2-4b9b-8e68-46703ed90fde
+
+####
+PUT http://localhost:3000/sales/084cd295-32d9-4dad-ba80-ceceaf380c2c
+Content-Type: application/json
+
+{
+    "modalidade": "ONLINE",
+    "coursedId": "e1c44acf-5e86-456b-9cd5-329a335cb210",
+    "nomeAluno": "Sandro",
+    "email": "trerfrer@teste.com",
+    "telefone": "32554errrgff",
+    "valorBruto": 1500,
+    "valorLiquido":1356
+
+}
+
+
+//Metrics
+
+//Expenses
+###
+GET  http://localhost:3000/expenses-day/2024-09-10
+
+###
+GET http://localhost:3000/expenses-month/2024-09-10T00:00:00.000Z
+
+###
+GET http://localhost:3000/expenses-year/2024
+
+
+//Sales
+
+###
+GET  http://localhost:3000/sales-day/2025-11-27
+
+###
+GET http://localhost:3000/sales-month/2025-11-10T00:00:00.000Z
+
+###
+GET http://localhost:3000/sales-year/2025
 
 ###
 POST http://localhost:3000/autenticate
 Content-Type: application/json
 
 {
-  "email": "gabrielsresende18@gmail.com",
-  "password": "gabriel1"
+  "email": "jander@gmail.com",
+  "password": "jander1"
 }
 
-//franchises
 
-###
-PUT http://localhost:3000/franchises
-Content-Type: application/json
 
-{
-  "email": "vanessamuel@gmail.com",
-  "password": "vanessa1"
-}
+

@@ -1,23 +1,26 @@
-// import { users } from '../..'
-// import { Router } from 'express'
+import express from 'express'
+export const router = express.Router()
 
-// const router = Router()
+import { prisma } from '../../lib/prisma.js'
 
-// router.delete('/users/:id', (req, res) => {
-//   const { id } = req.params
-//   const user = users.findIndex((user) => user.id !== parseInt(id))
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params
 
-//   if (user === -1) {
-//     return res.status(404).json({
-//       message: 'Usuário não encontrado',
-//     })
-//   }
+    const user = await prisma.collaborator.delete({
+      where: { id },
+    })
 
-//   const deleteUser = users.splice(user, 1)[0]
+    return res.status(200).json({
+      message: 'Usuário deletado com sucesso',
+      user,
+    })
+  } catch (error: any) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ message: 'Usuário nao encontrado' })
+    }
 
-//   res.json({
-//     message: 'Usuário deletado com sucesso',
-//     user,
-//   })
-// })
-// export default router
+    console.error(error)
+    return res.status(500).json({ message: 'Erro ao deletar usuário' })
+  }
+})

@@ -18,6 +18,8 @@ model Expenses {
   value Float
   type String
   date DateTime 
+  createdAt DateTime @default(now())
+
 }
 //tabela de Cursos
 model Courses {
@@ -27,6 +29,8 @@ model Courses {
   name String
   description String
   value Float
+  createdAt DateTime @default(now())
+
 
   sale Sale[]
 } 
@@ -41,9 +45,13 @@ model Sale {
   modalidade    Modalidade
   courseId      String
   nomeAluno     String
-  email         String
-  telefone      String?
+  email         String  @unique
+  telefone      String? @unique
   valorBruto    Float
+  desconto      Float?
+  comisao       Float?
+  imposto       Float?
+  taxaCartao    Float?
   valorLiquido  Float
   dataVenda     DateTime   @default(now())
   course Courses    @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -58,12 +66,12 @@ enum Modalidade {
 model  collaborator {
   id String @id @default(uuid())
   name String 
-  phoneNumber String
+  phoneNumber String @unique
   email String @unique
   wage Float
   sector String
   status StatusCollaborator
-  password String? @unique
+  password String
   createdAt DateTime @default(now())
 }
 
@@ -79,8 +87,8 @@ model Franchises {
   city String
   state String
   responsible String
-  phoneNumber String 
-  email String
+  phoneNumber String @unique
+  email String @unique
   createdAt DateTime @default(now())
   status StatusFranchises
 }

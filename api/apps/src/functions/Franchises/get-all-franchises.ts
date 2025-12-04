@@ -1,15 +1,16 @@
 import express from 'express'
 import { prisma } from '../../lib/prisma.js'
+
 export const router = express.Router()
 
-router.get('/sales', async (req, res) => {
+router.get('/franchises', async (req, res) => {
   try {
-    const sales = await prisma.sale.findMany({
+    const franchises = await prisma.franchises.findMany({
       orderBy: {
-        dataVenda: 'desc',
+        createdAt: 'desc',
       },
     })
-    return res.status(200).json(sales)
+    return res.status(200).json(franchises)
   } catch (error) {
     if (error) {
       console.log(error)
