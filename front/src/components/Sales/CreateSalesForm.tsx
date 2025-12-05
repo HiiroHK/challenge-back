@@ -20,8 +20,9 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Createsales } from "@/http/sales/createSales";
+import { AllCourses } from "@/http/courses/allCourses";
 
 interface Salesprops {
   title?: string;
@@ -31,8 +32,12 @@ interface Salesprops {
 }
 
 const formSchema = z.object({
-  typeCourse: z.enum(["Online", "Presencial"], {
+  modality: z.enum(["Online", "Presencial"], {
     message: "O campo modalidade de curso é obrigatório",
+  }),
+
+  courseId: z.string({
+    message: "Selecione um curso",
   }),
 
   name: z
@@ -56,7 +61,26 @@ const formSchema = z.object({
   tax: z.coerce.number({ message: "O campo imposto é obrigatório" }),
 
   cardTax: z.coerce.number({ message: "O campo taxa cartão é obrigatório" }),
+
+  netvalue: z.coerce
+    .number({ message: "O campo valor liquido é obrigatório" })
+    .optional(),
 });
+
+const [courses, setCourses] = useState([]);
+
+useEffect(() => {
+  async function loadCourses() {
+    try {
+      const data = await AllCourses();
+      setCourses(data);
+    } catch (error) {
+      console.log("Erro ao carregar cursos:", error);
+    }
+  }
+
+  loadCourses();
+}, []);
 
 type formSchema = z.infer<typeof formSchema>;
 
@@ -82,30 +106,23 @@ export function SalesForm({
     try {
       setIsSubmitting(true);
 
-      const valorliquido =
-        data.grossValue -
-        data.discount -
-        data.tax -
-        data.cardTax -
-        (data.commission / 100) * data.grossValue;
-
       const payload = {
         id:
           typeof crypto !== "undefined" && "randomUUID" in crypto
             ? crypto.randomUUID()
             : String(Date.now()),
-        modalidade: data.typeCourse,
-        courseid: "",
-        name: data.name,
+        Modalidade: data.modality,
+        courseId: data.courseId,
+        nomeAluno: data.name,
         email: data.email,
         telefone: data.phone,
-        valorbruto: data.grossValue,
+        valorBruto: data.grossValue,
         desconto: data.discount,
-        comissao: data.commission,
-        impostos: data.tax,
-        taxacartão: data.cardTax,
-        valorliquido,
-        date: new Date(),
+        comisao: data.commission,
+        imposto: data.tax,
+        taxacartao: data.cardTax,
+        dataVenda: new Date(),
+        valorLiquido: data.netvalue,
       };
 
       console.log("payload de venda:", payload);
@@ -147,7 +164,7 @@ export function SalesForm({
           <DialogDescription>{description}</DialogDescription>
           <form onSubmit={handleSubmit(confirmSale)}>
             <Controller
-              name="typeCourse"
+              name="modality"
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange}>
@@ -162,9 +179,34 @@ export function SalesForm({
               )}
             />
 
-            {errors?.typeCourse && (
+            {errors?.courseId && (
               <span className="text-left text-sm text-red-500">
-                {errors.typeCourse.message}
+                {errors.courseId.message}
+              </span>
+            )}
+
+            <Controller
+              name="courseId"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o curso" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses.map((curso) => (
+                      <SelectItem key={curso.id} value={curso.id}>
+                        {curso.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+
+            {errors?.courseId && (
+              <span className="text-left text-sm text-red-500">
+                {errors.courseId.message}
               </span>
             )}
 

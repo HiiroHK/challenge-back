@@ -15,9 +15,10 @@ import {
   Search,
   Plus,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiltroPorPeriodo } from "@/components/Dashboard/FiltroPorPeriodo";
 import { RangeCalendar } from "@/components/Dashboard/RangeCalendar";
+import { AllSales } from "@/http/sales/allSales";
 
 {
   /*Tipo dos daos de vendas*/
@@ -37,104 +38,10 @@ type Vendas = {
 type Filter = "semana" | "mes" | "ano";
 export function Sales() {
   const [selectedFilter, setselectedFilter] = useState<Filter>("mes");
-  const [vendasList] = useState<Vendas[]>([
-    {
-      id: "1",
-      name: "Gabriel",
-      email: "Gabriel@gmail.com",
-      phone: "(32)1111-1111",
-      type: "Presencial",
-      data: "12-02-25",
-      grossvalue: "3.500,00",
-      discount: "100,00",
-      deduction: "200,00",
-      finalvalue: "3.470,00",
-    },
-    {
-      id: "2",
-      name: "Eduardo",
-      email: "Eduardo@gmail.com",
-      phone: "(32)2222-2222",
-      type: "Presencial",
-      data: "14-01-25",
-      grossvalue: "3.250,00",
-      discount: "90,00",
-      deduction: "200,00",
-      finalvalue: "2.980,00",
-    },
-    {
-      id: "3",
-      name: "Jander",
-      email: "Jander@gmail.com",
-      phone: "(32)3333-3333",
-      type: "Presencial",
-      data: "16-01-25",
-      grossvalue: "3.300,00",
-      discount: "120,00",
-      deduction: "170,00",
-      finalvalue: "3.010,00",
-    },
-    {
-      id: "4",
-      name: "Vanessa",
-      email: "Vanessa@gmail.com",
-      phone: "(32)4444-4444",
-      type: "Online",
-      data: "21-01-25",
-      grossvalue: "2.800,00",
-      discount: "110,00",
-      deduction: "163,00",
-      finalvalue: "2.527,00",
-    },
-    {
-      id: "5",
-      name: "Bruno",
-      email: "Bruno@gmail.com",
-      phone: "(32)5555-5555",
-      type: "Presencial",
-      data: "01-01-25",
-      grossvalue: "2.500,00",
-      discount: "150,00",
-      deduction: "220,00",
-      finalvalue: "3.130,00",
-    },
-    {
-      id: "6",
-      name: "Max",
-      email: "Max@gmail.com",
-      phone: "(32)6666-6666",
-      type: "Online",
-      data: "01-01-25",
-      grossvalue: "2.600,00",
-      discount: "60,00",
-      deduction: "180,00",
-      finalvalue: "2.360,00",
-    },
-    {
-      id: "7",
-      name: "Helisson",
-      email: "Helisson@gmail.com",
-      phone: "(32)7777-7777",
-      type: "Online",
-      data: "01-01-25",
-      grossvalue: "2.800,00",
-      discount: "60,00",
-      deduction: "180,00",
-      finalvalue: "2.360,00",
-    },
-    {
-      id: "8",
-      name: "Lucas",
-      email: "Lucas@gmail.com",
-      phone: "(32)8888-8888",
-      type: "Online",
-      data: "01-01-25",
-      grossvalue: "2.950,00",
-      discount: "130,00",
-      deduction: "190,00",
-      finalvalue: "2.460,00",
-    },
-  ]);
+
+  const [salesList, setsalesList] = useState<Vendas[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   {
     /*Lógica do filtro do tipo de venda*/
@@ -142,8 +49,30 @@ export function Sales() {
   const [selectedVendas, setSelectedVendas] = useState<string>("all");
   const filteredVendas =
     selectedVendas === "all"
-      ? vendasList
-      : vendasList.filter((Vendas) => Vendas.type === selectedVendas);
+      ? salesList
+      : salesList.filter((Vendas) => Vendas.type === selectedVendas);
+
+  async function loadSales() {
+    setLoading(true);
+    setError(null);
+    try {
+      const resp = await AllSales();
+      const mapped: Vendas[] = resp.map((e: any) => ({
+        id: e.id,
+        name: e.name,
+      }));
+      setsalesList(mapped);
+    } catch (err) {
+      console.error(err);
+      setError("Erro ao carregar vendas.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadSales();
+  }, []);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -201,6 +130,7 @@ export function Sales() {
         {/*Tabela de cards de vendas*/}
         <section className="mt-2 grid gap-5 rounded-md border bg-white p-4">
           <h1 className="text-2xl font-semibold">Vendas cadastradas</h1>
+          {error && <p className="text-red-500">{error}</p>}
           {filteredVendas.map((Vendas) => (
             <CardSales
               name={Vendas.name}

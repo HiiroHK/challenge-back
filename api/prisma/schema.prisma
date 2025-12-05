@@ -52,7 +52,7 @@ model Sale {
   comisao       Float?
   imposto       Float?
   taxaCartao    Float?
-  valorLiquido  Float
+  valorLiquido  Float?
   dataVenda     DateTime   @default(now())
   course Courses    @relation(fields: [courseId], references: [id], onDelete: Cascade)
 

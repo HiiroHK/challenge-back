@@ -77,8 +77,8 @@ Content-Type: application/json
 {
     "image": "fdgdfgdd",
     "status": "ATIVO",
-    "name": "Javascript",
-    "description": "Curso para quem quer aprender a progrmar com Java e SpringBoot",
+    "name": "tailwind",
+    "description": "Curso para quem quer aprender a progrmar com tailwindcss",
     "value": 2500
 }
 
