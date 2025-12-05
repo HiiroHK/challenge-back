@@ -1,7 +1,7 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
-import { SalesForm } from "@/components/Sales/SalesForm";
+import { UpdateSalesForm } from "@/components/Sales/UpdateSalesForm";
 
 interface CardSalesProps {
   name: string;
@@ -82,7 +82,7 @@ export function CardSales({
           </div>
           {/*Modal de edição do card*/}
           <div className="flex gap-1">
-            <SalesForm
+            <UpdateSalesForm
               title="Edite sua venda"
               description="Insira os dados novos"
               icon={SquarePen}

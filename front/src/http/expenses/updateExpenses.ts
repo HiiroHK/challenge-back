@@ -5,22 +5,24 @@ interface updateExpenseProps {
   name: string;
   description: string;
   value: number;
-  type: string;
+  type: "Fixa" | "Variável";
+  date: Date;
 }
 
-export async function updateExpenses({
+export async function UpdateExpenses({
   id,
   name,
   description,
   value,
   type,
+  date,
 }: updateExpenseProps) {
-  const response = await api.put("/expenses/:id", {
-    id,
+  const response = await api.put(`/expenses/${id}`, {
     name,
     description,
     value,
     type,
+    date: new Date(date),
   });
   return response.data;
 }

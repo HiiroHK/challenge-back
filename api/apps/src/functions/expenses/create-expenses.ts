@@ -1,10 +1,10 @@
-import express from 'express'
-import { prisma } from '../../lib/prisma.js'
-export const router = express.Router()
+import express from "express";
+import { prisma } from "../../lib/prisma.js";
+export const router = express.Router();
 
-router.post('/expenses', async (req, res) => {
+router.post("/expenses", async (req, res) => {
   try {
-    const { name, description, value, type, date } = req.body
+    const { name, description, value, type, date } = req.body;
 
     await prisma.expenses.create({
       data: {
@@ -14,9 +14,9 @@ router.post('/expenses', async (req, res) => {
         type,
         date: new Date(date),
       },
-    })
-    return res.status(201).json({ message: 'Expense created successfully' })
+    });
+    return res.status(201).json({ message: "Expense created successfully" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});

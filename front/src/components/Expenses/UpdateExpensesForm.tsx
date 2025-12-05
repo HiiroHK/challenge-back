@@ -20,14 +20,21 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
-import { CreateExpenses } from "@/http/expenses/createExpenses";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Expensesprops {
   title?: string;
   description?: string;
   trigger?: string;
   icon?: React.ComponentType<IconBaseProps>;
+  initialData?: {
+    id: string;
+    name?: string;
+    type?: "Fixa" | "Variável";
+    description?: string;
+    value?: number;
+  };
+  onSuccess?: () => void;
 }
 
 const formSchema = z.object({
@@ -39,18 +46,22 @@ const formSchema = z.object({
     message: "O campo descrição da despesa é obrigatório",
   }),
 
-  name: z.string({ message: "O campo nome da despesa é obrigatório" }),
+  name: z.string({
+    message: "O campo nome da despesa é obrigatório",
+  }),
 
   value: z.coerce.number({ message: "O campo valor é obrigatório" }),
 });
 
 type formSchema = z.infer<typeof formSchema>;
 
-export function ExpensesForm({
+export function UpdateExpensesForm({
   title,
   description,
   trigger,
   icon: Icon,
+  initialData,
+  onSuccess,
 }: Expensesprops) {
   const {
     handleSubmit,
@@ -60,36 +71,61 @@ export function ExpensesForm({
     reset,
   } = useForm<formSchema>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      expenses:
+        initialData?.type === "Fixa"
+          ? "Fixa"
+          : initialData?.type === "Variável"
+            ? "Variável"
+            : undefined,
+      name: initialData?.name,
+      description: initialData?.description,
+      value: initialData?.value ?? undefined,
+    },
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function confirmExpense(data: formSchema) {
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        expenses:
+          initialData.type === "Fixa"
+            ? "Fixa"
+            : initialData.type === "Variável"
+              ? "Variável"
+              : undefined,
+        description: initialData.description ?? "",
+        value: initialData.value ?? undefined,
+      });
+    }
+  }, [initialData, reset]);
+
+  async function updateExpense(data: formSchema) {
+    if (!initialData?.id) {
+      toast.error("Despesa não localizada");
+    }
     try {
       setIsSubmitting(true);
 
       const payload = {
-        id:
-          typeof crypto !== "undefined" && "randomUUID" in crypto
-            ? crypto.randomUUID()
-            : String(Date.now()),
-        name: data.name,
-        type: data.expenses,
+        id: initialData?.id,
+        name: initialData?.name ?? undefined,
         description: data.description,
+        type: data.expenses,
         value: data.value,
         date: new Date(),
       };
 
-      console.log("payload de despesa:", payload);
+      await UpdateExpensesForm(payload);
 
-      toast.success("Despesa cadastrada com sucesso!");
+      toast.success("Despesa Atualizada com sucesso!");
+      onSuccess?.();
 
       reset();
-
-      await CreateExpenses(payload);
     } catch (error) {
       console.log(error);
-      toast.error("Erro ao cadastrar despesa");
+      toast.error("Erro ao atualizar despesa");
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +153,7 @@ export function ExpensesForm({
         <DialogContent>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          <form onSubmit={handleSubmit(confirmExpense)}>
+          <form onSubmit={handleSubmit(updateExpense)}>
             <span>Tipo de despesa</span>
             <Controller
               name="expenses"
@@ -189,7 +225,7 @@ export function ExpensesForm({
               className="mt-4 cursor-pointer justify-between bg-purple-500 p-4 hover:bg-purple-600"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Salvando..." : "Salvar"}
+              {isSubmitting ? "Atualizando..." : "Atualizar Despesa"}
             </Button>
           </form>
         </DialogContent>

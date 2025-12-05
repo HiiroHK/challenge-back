@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SalesForm } from "@/components/Sales/SalesForm";
+import { SalesForm } from "@/components/Sales/CreateSalesForm";
 import {
   ChevronLeft,
   ChevronRight,

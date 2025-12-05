@@ -13,16 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
+import { useState } from "react";
+import { Createsales } from "@/http/sales/createSales";
 
 interface Salesprops {
   title?: string;
@@ -32,7 +31,7 @@ interface Salesprops {
 }
 
 const formSchema = z.object({
-  typeCourse: z.enum(["online", "presencial"], {
+  typeCourse: z.enum(["Online", "Presencial"], {
     message: "O campo modalidade de curso é obrigatório",
   }),
 
@@ -77,18 +76,50 @@ export function SalesForm({
     resolver: zodResolver(formSchema),
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function confirmSale(data: formSchema) {
     try {
-      console.log(data);
+      setIsSubmitting(true);
+
+      const valorliquido =
+        data.grossValue -
+        data.discount -
+        data.tax -
+        data.cardTax -
+        (data.commission / 100) * data.grossValue;
+
+      const payload = {
+        id:
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : String(Date.now()),
+        modalidade: data.typeCourse,
+        courseid: "",
+        name: data.name,
+        email: data.email,
+        telefone: data.phone,
+        valorbruto: data.grossValue,
+        desconto: data.discount,
+        comissao: data.commission,
+        impostos: data.tax,
+        taxacartão: data.cardTax,
+        valorliquido,
+        date: new Date(),
+      };
+
+      console.log("payload de venda:", payload);
 
       toast.success("Venda cadastrada com sucesso!");
 
       reset();
+
+      await Createsales(payload);
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
-        toast.error("Erro ao cadastrar venda");
-      }
+      console.log(error);
+      toast.error("Erro ao cadastrar venda");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -111,12 +142,10 @@ export function SalesForm({
           </button>
         </DialogTrigger>
 
-        <DialogContent className="p-3">
+        <DialogContent>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
           <form onSubmit={handleSubmit(confirmSale)}>
-            <label>Modalidade do curso</label>
-
             <Controller
               name="typeCourse"
               control={control}
@@ -126,12 +155,13 @@ export function SalesForm({
                     <SelectValue placeholder="Selecione uma modalidade" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="online">Online</SelectItem>
-                    <SelectItem value="presencial">Presencial</SelectItem>
+                    <SelectItem value="Online">Online</SelectItem>
+                    <SelectItem value="Presencial">Presencial</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
+
             {errors?.typeCourse && (
               <span className="text-left text-sm text-red-500">
                 {errors.typeCourse.message}
@@ -259,8 +289,11 @@ export function SalesForm({
                   </span>
                 )}
 
-                <Button className="mt-4 cursor-pointer justify-between bg-purple-500 p-4 hover:bg-purple-600">
-                  Salvar
+                <Button
+                  className="mt-4 cursor-pointer justify-between bg-purple-500 p-4 hover:bg-purple-600"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Salvando..." : "Salvar"}
                 </Button>
               </div>
             </div>

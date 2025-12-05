@@ -12,7 +12,7 @@ export type bgColorTypes =
 interface ReportsCardProps {
   title: string;
   icon?: React.ComponentType<IconBaseProps>;
-  value: string;
+  value: number;
   color?: colorTypes;
   bgColor?: bgColorTypes;
   iconColor?: string;
@@ -26,6 +26,10 @@ export function CardsReports({
   bgColor,
   iconColor,
 }: ReportsCardProps) {
+  const valorFormatado = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
   return (
     <div>
       {color === "green" && bgColor === "green" && (
@@ -36,7 +40,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>
@@ -55,7 +59,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                R$ {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>
@@ -75,7 +79,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>
@@ -94,7 +98,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                R$ {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>
@@ -113,7 +117,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                R$ {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>
@@ -132,7 +136,7 @@ export function CardsReports({
             </CardTitle>
             <div className="mt-5 ml-8 grid grid-cols-2">
               <CardContent className="p-0 text-2xl font-bold">
-                {value}
+                {valorFormatado}
               </CardContent>
             </div>
           </div>

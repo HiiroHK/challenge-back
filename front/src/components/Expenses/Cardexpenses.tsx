@@ -1,17 +1,22 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { ExpensesForm } from "@/components/Expenses/ExpensesForm";
+import { UpdateExpensesForm } from "./UpdateExpensesForm";
+import { useState } from "react";
+import { DeleteExpenses } from "@/http/expenses/deleteExpenses";
+import { toast } from "sonner";
 
 interface CardExpensesProps {
+  id: string;
   title: string;
   description: string;
   data: string;
   fixed?: string;
 
-  value: string;
+  value: number;
 }
 
 export function CardExpenses({
+  id,
   title,
   description,
   data,
@@ -19,6 +24,29 @@ export function CardExpenses({
 
   value,
 }: CardExpensesProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const valorFormatado = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+
+  async function handleDelete() {
+    const confirmDelete = window.confirm(
+      "tem certeza que deseja deletar a despesa?",
+    );
+    if (!confirmDelete) return;
+    try {
+      setIsDeleting(true);
+      await DeleteExpenses({ id });
+      toast.success("Despesa deletada com sucesso!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao deletar despesa");
+    } finally {
+      setIsDeleting(false);
+    }
+  }
   return (
     <div>
       {/*Card de edição do gasto*/}
@@ -39,7 +67,9 @@ export function CardExpenses({
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-red-600">R$ {value}</h1>
+          <span className="text-2xl font-bold text-red-600">
+            {valorFormatado}
+          </span>
         </header>
         <div className="mr-4 flex justify-between">
           <div className="text-gray-500">
@@ -48,14 +78,18 @@ export function CardExpenses({
           </div>
           {/*Modal de edição de gasto*/}
           <div className="flex gap-1">
-            <ExpensesForm
+            <UpdateExpensesForm
               title="Edite sua despesa"
               description="Insira os dados novos"
               icon={SquarePen}
             />
 
             {/*Botão de excluir o card*/}
-            <button className="flex h-9 w-9 items-center justify-center rounded-sm border bg-white transition duration-[0.5s] hover:bg-gray-300">
+            <button
+              className="flex h-9 w-9 items-center justify-center rounded-sm border bg-white transition duration-[0.5s] hover:bg-gray-300"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
               <Trash2 />
             </button>
           </div>

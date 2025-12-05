@@ -1,6 +1,5 @@
 import { Aside } from "@/components/Aside";
 import { CardExpenses } from "@/components/Expenses/Cardexpenses";
-
 import { CardsReports } from "@/components/Reports/CardsReports";
 import {
   Select,
@@ -19,9 +18,10 @@ import {
   Search,
   TrendingDown,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiltroPorPeriodo } from "@/components/Dashboard/FiltroPorPeriodo";
 import { RangeCalendar } from "@/components/Dashboard/RangeCalendar";
+import { AllExpenses } from "@/http/expenses/allExpenses";
 
 {
   /*Tipos de dados de gastos*/
@@ -33,97 +33,56 @@ type Gastos = {
   data: string;
   fixed: string;
   Appellant: string;
-  value: string;
+  value: number;
 };
+
 type Filter = "semana" | "mes" | "ano";
 export function Expenses() {
   const [selectedFilter, setselectedFilter] = useState<Filter>("mes");
   {
     /*Gastos cadastrados*/
   }
-  const [gastosList] = useState<Gastos[]>([
-    {
-      id: "1",
-      title: "Aluguel do espaço",
-      description: "Aluguel",
-      data: "01-01-25",
-      fixed: "Fixa",
-      Appellant: "Recorrente",
-      value: "3.000,00",
-    },
-    {
-      id: "2",
-      title: "Conta de luz",
-      description: "Energia Elétrica",
-      data: "01-01-25",
-      fixed: "Variavel",
-      Appellant: "Recorrente",
-      value: "450,00",
-    },
-    {
-      id: "3",
-      title: "Água",
-      description: "Conta de água",
-      data: "01-01-25",
-      fixed: "Fixa",
-      Appellant: "Recorrente",
-      value: "223,00",
-    },
-    {
-      id: "4",
-      title: "Reforma do escritório",
-      description: "Obra",
-      data: "12-04-25",
-      fixed: "Variável",
-      Appellant: "",
-      value: "4.530,00",
-    },
-    {
-      id: "5",
-      title: "Compra do notebook",
-      description: "Compra",
-      data: "10-02-25",
-      fixed: "Variável",
-      Appellant: "",
-      value: "3.060,00",
-    },
-    {
-      id: "6",
-      title: "Internet",
-      description: "Conta de internet",
-      data: "01-01-25",
-      fixed: "Fixa",
-      Appellant: "Recorrente",
-      value: "740,00",
-    },
-    {
-      id: "7",
-      title: "Compra de leds novos e instalação",
-      description: "Obra",
-      data: "01-01-25",
-      fixed: "Variável",
-      Appellant: "",
-      value: "350,00",
-    },
-    {
-      id: "8",
-      title: "Conserto dos notebooks",
-      description: "Reparos",
-      data: "01-01-25",
-      fixed: "Variável",
-      Appellant: "",
-      value: "2.500,00",
-    },
-  ]);
+  const [expensesList, setExpensesList] = useState<Gastos[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   {
     /*Lógica do filtro de gastos*/
   }
   const [selectedfixed, setSelectedfixed] = useState<string>("all");
+
+  async function loadExpenses() {
+    setLoading(true);
+    setError(null);
+    try {
+      const resp = await AllExpenses();
+      const mapped: Gastos[] = resp.map((e: any) => ({
+        id: e.id,
+        title: e.name ?? e.title ?? "Despesa",
+        description: e.description ?? "",
+        data: e.date ? new Date(e.date).toLocaleDateString("pt-BR") : "",
+        fixed:
+          e.type === "fixedExpense" || e.type === "Fixa" ? "Fixa" : "Variável",
+        Appellant: e.appellant ?? "",
+        value: Number(e.value ?? e.valor ?? 0),
+      }));
+      setExpensesList(mapped);
+    } catch (err) {
+      console.error(err);
+      setError("Erro ao carregar despesas");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadExpenses();
+  });
+
   const filteredGastos =
     selectedfixed === "all"
-      ? gastosList
-      : gastosList.filter((gastos) => gastos.fixed === selectedfixed);
+      ? expensesList
+      : expensesList.filter((gastos) => gastos.fixed === selectedfixed);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -149,21 +108,21 @@ export function Expenses() {
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <CardsReports
             title={"Despesas fixas"}
-            value={"4.413,00"}
+            value={4413}
             color={"red"}
             icon={Calendar}
             bgColor={"red"}
           />
           <CardsReports
             title={"Despesas variáveis"}
-            value={"10.440,00"}
+            value={10440}
             color={"orange"}
             icon={TrendingDown}
             bgColor={"orange"}
           />
           <CardsReports
             title={"Total de gastos"}
-            value={"14.853,00"}
+            value={14850}
             color={"purple"}
             icon={TrendingDown}
             bgColor={"purple"}
@@ -205,8 +164,10 @@ export function Expenses() {
         {/*Tabela de cards de gastos*/}
         <section className="grid gap-5 rounded-md border bg-white p-4">
           <h1 className="text-2xl font-semibold">Todas as depesas</h1>
+          {error && <p className="text-red-500">{error}</p>}
           {filteredGastos.map((Gastos) => (
             <CardExpenses
+              id={Gastos.id}
               title={Gastos.title}
               description={Gastos.description}
               data={Gastos.data}

@@ -5,15 +5,17 @@ interface createExpensesProps {
   name: string;
   description: string;
   value: number;
-  type: string;
+  type: "Fixa" | "Variável";
+  date: Date;
 }
 
-export async function createExpenses({
+export async function CreateExpenses({
   id,
   name,
   description,
   value,
   type,
+  date,
 }: createExpensesProps) {
   const response = await api.post("/expenses", {
     id,
@@ -21,6 +23,7 @@ export async function createExpenses({
     description,
     value,
     type,
+    date: new Date(date),
   });
   return response.data;
 }
