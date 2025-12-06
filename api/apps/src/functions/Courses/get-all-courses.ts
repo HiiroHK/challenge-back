@@ -1,5 +1,5 @@
 import expresss from 'express'
-import { prisma } from '../../lib/prisma'
+import { prisma } from '../../lib/prisma.js'
 
 export const router = expresss.Router()
 

@@ -67,21 +67,6 @@ const formSchema = z.object({
     .optional(),
 });
 
-const [courses, setCourses] = useState([]);
-
-useEffect(() => {
-  async function loadCourses() {
-    try {
-      const data = await AllCourses();
-      setCourses(data);
-    } catch (error) {
-      console.log("Erro ao carregar cursos:", error);
-    }
-  }
-
-  loadCourses();
-}, []);
-
 type formSchema = z.infer<typeof formSchema>;
 
 export function SalesForm({
@@ -99,6 +84,26 @@ export function SalesForm({
   } = useForm<formSchema>({
     resolver: zodResolver(formSchema),
   });
+
+  interface Course {
+    id: string;
+    name: string;
+  }
+
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    async function loadCourses() {
+      try {
+        const data = await AllCourses();
+        setCourses(data);
+      } catch (error) {
+        console.log("Erro ao carregar cursos:", error);
+      }
+    }
+
+    loadCourses();
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

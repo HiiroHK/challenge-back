@@ -2,45 +2,45 @@ import { api } from "@/lib/axios";
 
 interface updateSalesProps {
   id: string;
-  modalidade: "Online" | "Presencial";
-  courseid: string;
-  name: string;
+  Modalidade: "Online" | "Presencial";
+  courseId: string;
+  nomeAluno: string;
   email: string;
   telefone: string;
-  valorbruto: number;
+  valorBruto: number;
   desconto: number;
-  comissão: number;
-  impostos: number;
-  taxacartão: number;
-  valorliquido: number;
+  comisao: number;
+  imposto: number;
+  taxacartao: number;
+  valorLiquido?: number;
 }
 
 export async function Updatesales({
   id,
-  modalidade,
-  courseid,
-  name,
+  Modalidade,
+  courseId,
+  nomeAluno,
   email,
   telefone,
-  valorbruto,
+  valorBruto,
   desconto,
-  comissão,
-  impostos,
-  taxacartão,
-  valorliquido,
+  comisao,
+  imposto,
+  taxacartao,
+  valorLiquido,
 }: updateSalesProps) {
   const response = await api.put(`/sales/${id}`, {
-    modalidade,
-    courseid,
-    name,
+    modalidade: Modalidade.toUpperCase(),
+    courseId,
+    nomeAluno,
     email,
     telefone,
-    valorbruto,
+    valorBruto,
     desconto,
-    comissão,
-    impostos,
-    taxacartão,
-    valorliquido,
+    comisao,
+    imposto,
+    taxacartao,
+    valorLiquido,
   });
   return response.data;
 }

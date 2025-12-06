@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
 import { Updatesales } from "@/http/sales/updateSales";
+import { AllCourses } from "@/http/courses/allCourses";
 
 interface Salesprops {
   title?: string;
@@ -38,14 +39,18 @@ interface Salesprops {
     commission?: number;
     tax?: number;
     cardTax?: number;
-    valorliquido?: number;
+    valorLiquido?: number;
   };
   onSuccess?: () => void;
 }
 
 const formSchema = z.object({
-  typeCourse: z.enum(["online", "presencial"], {
+  modality: z.enum(["Online", "Presencial"], {
     message: "O campo modalidade de curso é obrigatório",
+  }),
+
+  courseId: z.string({
+    message: "Selecione um curso",
   }),
 
   name: z
@@ -69,7 +74,16 @@ const formSchema = z.object({
   tax: z.coerce.number({ message: "O campo imposto é obrigatório" }),
 
   cardTax: z.coerce.number({ message: "O campo taxa cartão é obrigatório" }),
+
+  netvalue: z.coerce
+    .number({ message: "O campo valor liquido é obrigatório" })
+    .optional(),
 });
+
+interface Course {
+  id: string;
+  name: string;
+}
 
 type formSchema = z.infer<typeof formSchema>;
 
@@ -90,11 +104,11 @@ export function UpdateSalesForm({
   } = useForm<formSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      typeCourse:
+      modality:
         initialData?.type === "Online"
-          ? "online"
+          ? "Online"
           : initialData?.type === "Presencial"
-            ? "presencial"
+            ? "Presencial"
             : undefined,
       name: initialData?.name,
       email: initialData?.email,
@@ -104,20 +118,35 @@ export function UpdateSalesForm({
       commission: initialData?.commission,
       tax: initialData?.tax,
       cardTax: initialData?.cardTax,
-      valorliquido: initialData?.valorliquido,
+      netvalue: initialData?.valorLiquido,
     },
   });
+
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    async function loadCourses() {
+      try {
+        const data = await AllCourses();
+        setCourses(data);
+      } catch (error) {
+        console.log("Erro ao carregar cursos:", error);
+      }
+    }
+
+    loadCourses();
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       reset({
-        typeCourse:
+        modality:
           initialData?.type === "Online"
-            ? "online"
+            ? "Online"
             : initialData?.type === "Presencial"
-              ? "presencial"
+              ? "Presencial"
               : undefined,
         name: initialData?.name ?? "",
         email: initialData?.email ?? "",
@@ -127,7 +156,7 @@ export function UpdateSalesForm({
         commission: initialData?.commission ?? undefined,
         tax: initialData?.tax ?? undefined,
         cardTax: initialData?.cardTax ?? undefined,
-        valorliquido: initialData?.valorliquido ?? undefined,
+        netvalue: initialData?.valorLiquido ?? undefined,
       });
     }
   }, [initialData, reset]);
@@ -142,17 +171,18 @@ export function UpdateSalesForm({
 
       const payload = {
         id: initialData.id,
-        type: data.typeCourse === "online" ? "Online" : "Presencial",
-        name: data.name,
+        Modalidade: data.modality,
+        courseId: data.courseId,
+        nomeAluno: data.name,
         email: data.email,
         telefone: data.phone,
-        valorbruto: data.grossValue,
+        valorBruto: data.grossValue,
         desconto: data.discount,
-        comissao: data.commission,
-        impostos: data.tax,
+        comisao: data.commission,
+        imposto: data.tax,
         taxacartao: data.cardTax,
-        valorliquido: data.valorliquido ?? undefined,
-        date: new Date(),
+        dataVenda: new Date(),
+        valorLiquido: data.netvalue,
       };
 
       await Updatesales(payload);
@@ -199,7 +229,7 @@ export function UpdateSalesForm({
             <label>Modalidade do curso</label>
 
             <Controller
-              name="typeCourse"
+              name="modality"
               control={control}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
@@ -207,15 +237,40 @@ export function UpdateSalesForm({
                     <SelectValue placeholder="Selecione uma modalidade" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="online">Online</SelectItem>
-                    <SelectItem value="presencial">Presencial</SelectItem>
+                    <SelectItem value="Online">Online</SelectItem>
+                    <SelectItem value="Presencial">Presencial</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
-            {errors?.typeCourse && (
+            {errors?.modality && (
               <span className="text-left text-sm text-red-500">
-                {errors.typeCourse.message}
+                {errors.modality.message}
+              </span>
+            )}
+
+            <Controller
+              name="courseId"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o curso" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses.map((curso) => (
+                      <SelectItem key={curso.id} value={curso.id}>
+                        {curso.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+
+            {errors?.courseId && (
+              <span className="text-left text-sm text-red-500">
+                {errors.courseId.message}
               </span>
             )}
 

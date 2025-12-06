@@ -1,21 +1,25 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-
 import { UpdateSalesForm } from "@/components/Sales/UpdateSalesForm";
+import { useState } from "react";
+import { toast } from "sonner";
+import { DeleteSales } from "@/http/sales/deleteSales";
 
 interface CardSalesProps {
+  id: string;
   name: string;
   email: string;
   phone: string;
   type: string;
   data: string;
-  grossvalue: string;
-  discount: string;
-  deduction: string;
-  finalvalue: string;
+  grossvalue: number;
+  discount: number;
+  deduction: number;
+  finalvalue: number;
 }
 
 export function CardSales({
+  id,
   name,
   email,
   phone,
@@ -26,6 +30,32 @@ export function CardSales({
   deduction,
   finalvalue,
 }: CardSalesProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  function formatBRL(value: number) {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  }
+
+  async function handleDelete() {
+    const confirmDelete = window.confirm(
+      "tem certeza que deseja deletar a venda?",
+    );
+    if (!confirmDelete) return;
+    try {
+      setIsDeleting(true);
+      await DeleteSales({ id });
+      toast.success("Venda deletada com sucesso!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao deletar venda");
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
   return (
     <div>
       {/*card de edição da venda*/}
@@ -58,25 +88,25 @@ export function CardSales({
             <div>
               <p>Valor bruto</p>
               <p className="text-[16px] font-bold text-green-600">
-                R$ {grossvalue}
+                {formatBRL(grossvalue)}
               </p>
             </div>
             <div>
               <p> Desconto</p>
               <p className="text-[16px] font-bold text-red-600">
-                -R$ {discount}
+                -{formatBRL(discount)}
               </p>
             </div>
             <div>
               <p>Deduçoes</p>
               <p className="text-[16px] font-bold text-red-600">
-                -R$ {deduction}
+                -{formatBRL(deduction)}
               </p>
             </div>
             <div>
               <p>Valor final</p>
               <p className="text-[18px] font-bold text-purple-800">
-                R$ {finalvalue}
+                {formatBRL(finalvalue)}
               </p>
             </div>
           </div>
@@ -89,7 +119,11 @@ export function CardSales({
             />
 
             {/*Botão de excluir o card*/}
-            <button className="flex h-9 w-9 items-center justify-center rounded-sm border bg-white transition duration-[0.5s] hover:bg-gray-300">
+            <button
+              className="flex h-9 w-9 items-center justify-center rounded-sm border bg-white transition duration-[0.5s] hover:bg-gray-300"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
               <Trash2 />
             </button>
           </div>

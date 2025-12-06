@@ -19,8 +19,14 @@ import { ChartSaleXExpenseXProfit } from "@/components/Reports/ChartSaleXExpense
 import { ChartExpenseDistribution } from "@/components/Reports/ChartExpenseDistribution";
 import { ChartRevenueByCourseType } from "@/components/Reports/ChartRevenueByCourseType";
 import { ChartTrendAnalysis } from "@/components/Reports/ChartTrendAnalysis";
+import { useExpenses } from "@/mathcards/expensesCards";
+import { useSales } from "@/mathcards/salesCard";
 
 export function Reports() {
+  /* funções dos cards */
+  const { totais } = useExpenses();
+  const { totalVendas } = useSales();
+
   return (
     <div className="flex h-screen">
       <Aside />
@@ -59,14 +65,14 @@ export function Reports() {
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-4">
           <CardsReports
             title={"Vendas"}
-            value={"10000"}
+            value={totalVendas}
             color={"green"}
             icon={TrendingUp}
             bgColor={"green"}
           />
           <CardsReports
             title={"Despesas"}
-            value={"10000"}
+            value={totais.totalGastos}
             color={"red"}
             icon={TrendingDown}
             bgColor={"red"}
@@ -74,7 +80,7 @@ export function Reports() {
 
           <CardsReports
             title={"Balanço"}
-            value={"10000"}
+            value={10000}
             color={"blue"}
             icon={TrendingUpDown}
             bgColor={"blue"}

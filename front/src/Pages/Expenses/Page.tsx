@@ -18,14 +18,13 @@ import {
   Search,
   TrendingDown,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiltroPorPeriodo } from "@/components/Dashboard/FiltroPorPeriodo";
 import { RangeCalendar } from "@/components/Dashboard/RangeCalendar";
 import { AllExpenses } from "@/http/expenses/allExpenses";
+import { useExpenses } from "@/mathcards/expensesCards";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-{
-  /*Tipos de dados de gastos*/
-}
 type Gastos = {
   id: string;
   title: string;
@@ -37,52 +36,40 @@ type Gastos = {
 };
 
 type Filter = "semana" | "mes" | "ano";
-export function Expenses() {
-  const [selectedFilter, setselectedFilter] = useState<Filter>("mes");
-  {
-    /*Gastos cadastrados*/
-  }
-  const [expensesList, setExpensesList] = useState<Gastos[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  {
-    /*Lógica do filtro de gastos*/
-  }
+export function Expenses() {
+  const queryClient = useQueryClient();
+  const [selectedFilter, setselectedFilter] = useState<Filter>("mes");
   const [selectedfixed, setSelectedfixed] = useState<string>("all");
 
-  async function loadExpenses() {
-    setLoading(true);
-    setError(null);
-    try {
+  // TanStack Query para buscar despesas
+  const {
+    data: expensesList = [],
+    isLoading,
+    isError,
+  } = useQuery<Gastos[]>({
+    queryKey: ["expenses"],
+    queryFn: async () => {
       const resp = await AllExpenses();
-      const mapped: Gastos[] = resp.map((e: any) => ({
+      return resp.map((e: any) => ({
         id: e.id,
         title: e.name ?? e.title ?? "Despesa",
         description: e.description ?? "",
         data: e.date ? new Date(e.date).toLocaleDateString("pt-BR") : "",
-        fixed:
-          e.type === "fixedExpense" || e.type === "Fixa" ? "Fixa" : "Variável",
+        fixed: e.type === "Fixa" ? "Fixa" : "Variável",
         Appellant: e.appellant ?? "",
         value: Number(e.value ?? e.valor ?? 0),
       }));
-      setExpensesList(mapped);
-    } catch (err) {
-      console.error(err);
-      setError("Erro ao carregar despesas");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadExpenses();
+    },
+    staleTime: 1000 * 60, // 1 minuto
   });
 
   const filteredGastos =
     selectedfixed === "all"
       ? expensesList
       : expensesList.filter((gastos) => gastos.fixed === selectedfixed);
+
+  const { totais } = useExpenses();
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -104,30 +91,32 @@ export function Expenses() {
             icon={Plus}
           />
         </div>
+
         {/*Cards com os tipos de despesas*/}
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <CardsReports
             title={"Despesas fixas"}
-            value={4413}
+            value={totais.totalFixas}
             color={"red"}
             icon={Calendar}
             bgColor={"red"}
           />
           <CardsReports
             title={"Despesas variáveis"}
-            value={10440}
+            value={totais.totalVariaveis}
             color={"orange"}
             icon={TrendingDown}
             bgColor={"orange"}
           />
           <CardsReports
             title={"Total de gastos"}
-            value={14850}
+            value={totais.totalGastos}
             color={"purple"}
             icon={TrendingDown}
             bgColor={"purple"}
           />
         </section>
+
         {/*Inputs de pesquisa e select*/}
         <div className="flex w-full flex-col gap-4 rounded-lg bg-white p-5 shadow lg:flex-row lg:items-center">
           <div className="flex w-full items-center gap-3 rounded-lg border px-3 py-2 lg:w-5/6">
@@ -161,12 +150,15 @@ export function Expenses() {
             </Select>
           </div>
         </div>
+
         {/*Tabela de cards de gastos*/}
         <section className="grid gap-5 rounded-md border bg-white p-4">
           <h1 className="text-2xl font-semibold">Todas as depesas</h1>
-          {error && <p className="text-red-500">{error}</p>}
+          {isError && <p className="text-red-500">Erro ao carregar despesas</p>}
+          {isLoading && <p>Carregando...</p>}
           {filteredGastos.map((Gastos) => (
             <CardExpenses
+              key={Gastos.id}
               id={Gastos.id}
               title={Gastos.title}
               description={Gastos.description}
@@ -175,6 +167,7 @@ export function Expenses() {
               value={Gastos.value}
             />
           ))}
+
           {/*Botões de paginação*/}
           <div className="mt-1 mr-1 flex justify-end gap-1">
             <ChevronLeft className="h-10 w-10 rounded-[8px] border-2 transition duration-[2s] hover:bg-gray-400" />

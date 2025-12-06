@@ -1,4 +1,4 @@
-//Formulário de Gastos
+//Formulário de Gastos com Tanstack Query
 import {
   DialogContent,
   DialogTrigger,
@@ -20,8 +20,9 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { CreateExpenses } from "@/http/expenses/createExpenses";
-import { useState } from "react";
 
 interface Expensesprops {
   title?: string;
@@ -52,6 +53,8 @@ export function ExpensesForm({
   trigger,
   icon: Icon,
 }: Expensesprops) {
+  const queryClient = useQueryClient();
+
   const {
     handleSubmit,
     control,
@@ -62,37 +65,34 @@ export function ExpensesForm({
     resolver: zodResolver(formSchema),
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  async function confirmExpense(data: formSchema) {
-    try {
-      setIsSubmitting(true);
-
-      const payload = {
-        id:
-          typeof crypto !== "undefined" && "randomUUID" in crypto
-            ? crypto.randomUUID()
-            : String(Date.now()),
-        name: data.name,
-        type: data.expenses,
-        description: data.description,
-        value: data.value,
-        date: new Date(),
-      };
-
-      console.log("payload de despesa:", payload);
-
+  const mutation = useMutation({
+    mutationFn: (payload: any) => CreateExpenses(payload),
+    onSuccess: () => {
       toast.success("Despesa cadastrada com sucesso!");
-
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
       reset();
-
-      await CreateExpenses(payload);
-    } catch (error) {
-      console.log(error);
+    },
+    onError: () => {
       toast.error("Erro ao cadastrar despesa");
-    } finally {
-      setIsSubmitting(false);
-    }
+    },
+  });
+
+  const isLoading = mutation.status === "pending";
+
+  function confirmExpense(data: formSchema) {
+    const payload = {
+      id:
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : String(Date.now()),
+      name: data.name,
+      type: data.expenses,
+      description: data.description,
+      value: data.value,
+      date: new Date(),
+    };
+
+    mutation.mutate(payload);
   }
 
   return (
@@ -109,7 +109,6 @@ export function ExpensesForm({
             <div className="flex items-center justify-center">
               {Icon && <Icon />}
             </div>
-
             {trigger}
           </button>
         </DialogTrigger>
@@ -187,14 +186,13 @@ export function ExpensesForm({
 
             <Button
               className="mt-4 cursor-pointer justify-between bg-purple-500 p-4 hover:bg-purple-600"
-              disabled={isSubmitting}
+              disabled={isLoading}
             >
-              {isSubmitting ? "Salvando..." : "Salvar"}
+              {isLoading ? "Salvando..." : "Salvar"}
             </Button>
           </form>
         </DialogContent>
       </Dialog>
-         
     </div>
   );
 }

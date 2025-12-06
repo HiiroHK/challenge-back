@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "../../lib/prisma.js";
+
 export const router = express.Router();
 
 interface CalculoValorLiquidoParams {
@@ -19,43 +20,27 @@ function calcularValorLiquido({
   impostoPercent,
   impostoSobre = "aposDesconto",
 }: CalculoValorLiquidoParams) {
-  // Garantir números
   valorBruto = Number(valorBruto) || 0;
   desconto = Number(desconto) || 0;
   comisao = Number(comisao) || 0;
   taxaCartaoPercent = Number(taxaCartaoPercent) || 0;
   impostoPercent = Number(impostoPercent) || 0;
 
-  // 1. Valor após desconto
   const valorAposDesconto = valorBruto - desconto;
 
-  // 2. Base do imposto (pode ser sobre o bruto ou sobre o valor após desconto)
   const baseImposto = impostoSobre === "bruto" ? valorBruto : valorAposDesconto;
 
-  // 3. Cálculos percentuais
   const valorComissao = valorAposDesconto * (comisao / 100);
   const valorTaxaCartao = valorAposDesconto * (taxaCartaoPercent / 100);
   const valorImposto = baseImposto * (impostoPercent / 100);
 
-  // 4. Valor líquido final
   const valorLiquido =
     valorAposDesconto - valorComissao - valorTaxaCartao - valorImposto;
 
-  return {
-    valorBruto,
-    desconto,
-    valorAposDesconto,
-    comisao,
-    valorComissao,
-    taxaCartaoPercent,
-    valorTaxaCartao,
-    impostoPercent,
-    impostoSobre,
-    baseImposto,
-    valorImposto,
-    valorLiquido,
-  };
+  return valorLiquido;
 }
+
+// -------------------------------------------------------------
 
 router.post("/sales", async (req, res) => {
   try {
@@ -70,14 +55,21 @@ router.post("/sales", async (req, res) => {
       comisao,
       imposto,
       taxaCartao,
-      dataVenda: date,
-      valorLiquido: calcularValorLiquido,
+      dataVenda,
     } = req.body;
+
+    // ⭐ CALCULANDO O VALOR LÍQUIDO CORRETAMENTE
+    const valorLiquido = calcularValorLiquido({
+      valorBruto,
+      desconto,
+      comisao,
+      taxaCartaoPercent: taxaCartao,
+      impostoPercent: imposto,
+    });
 
     await prisma.sale.create({
       data: {
         modalidade,
-        courseId,
         nomeAluno,
         email,
         telefone,
@@ -86,10 +78,10 @@ router.post("/sales", async (req, res) => {
         comisao,
         imposto,
         taxaCartao,
-        dataVenda: new Date(date),
-        valorLiquido: calcularValorLiquido,
+        dataVenda: new Date(dataVenda),
+        valorLiquido,
         course: {
-          connect: { id: "courseId" }, // id de um curso existente
+          connect: { id: courseId }, // agora usa o valor correto
         },
       },
     });
@@ -97,5 +89,6 @@ router.post("/sales", async (req, res) => {
     return res.status(201).json({ message: "Sale created successfully" });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: "Erro ao criar venda" });
   }
 });

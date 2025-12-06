@@ -25,6 +25,9 @@ import {
 import { FiltroPorPeriodo } from "@/components/Dashboard/FiltroPorPeriodo";
 import { ToggleButton } from "../../components/Dashboard/ToggleButton";
 import { useNavigate } from "react-router-dom";
+import { useExpenses } from "@/mathcards/expensesCards";
+import { useSales } from "@/mathcards/salesCard";
+import { useNetBalance } from "@/mathcards/saldoCard";
 
 type Filter = "semana" | "mes" | "ano";
 export function Dashboard() {
@@ -59,28 +62,9 @@ export function Dashboard() {
 
   //Funções para obter o total de despesas
 
-  const [totalExpenses, setTotalExpenses] = useState<totalExpensesResponse[]>(
-    [],
-  );
-  async function getTotalExpense() {
-    try {
-      const result = await getTotalExpenses();
-      setTotalExpenses(result);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const totalExpense = totalExpenses.reduce((acc, expenses) => {
-    return acc + expenses.valor;
-  }, 0);
-
-  useEffect(() => {
-    getTotalExpense();
-  }, []);
-
-  // Calculo saldo liquido
-
-  const saldoLiquido = totalSale - totalExpense;
+  const { totais } = useExpenses();
+  const { totalVendas } = useSales();
+  const { saldoLiquido } = useNetBalance();
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -108,14 +92,14 @@ export function Dashboard() {
             iconMain={TrendingUp}
             iconSecundary={ChartNoAxesCombined}
             name="  Total de Vendas"
-            value={totalSale}
+            value={totalVendas}
             color="green"
           />
           <InfoCard
             iconMain={TrendingDown}
             iconSecundary={BanknoteArrowDown}
             name="  Total de Despesas"
-            value={totalExpense}
+            value={totais.totalGastos}
             color="red"
           />
           <InfoCard

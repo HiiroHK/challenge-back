@@ -1,4 +1,4 @@
-//Formulário de Gastos
+//Formulário de Gastos atualizado com TanStack Query v5
 import {
   DialogContent,
   DialogTrigger,
@@ -20,7 +20,9 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { IconBaseProps } from "react-icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UpdateExpenses } from "@/http/expenses/updateExpenses"; // Função que faz a API de update
 
 interface Expensesprops {
   title?: string;
@@ -41,16 +43,13 @@ const formSchema = z.object({
   expenses: z.enum(["Fixa", "Variável"], {
     message: "O campo tipo despesa é obrigatório",
   }),
-
   description: z.string({
-    message: "O campo descrição da despesa é obrigatório",
+    message: "O campo descrição da despesa é obrigatório",
   }),
-
   name: z.string({
-    message: "O campo nome da despesa é obrigatório",
+    message: "O campo nome da despesa é obrigatório",
   }),
-
-  value: z.coerce.number({ message: "O campo valor é obrigatório" }),
+  value: z.coerce.number({ message: "O campo valor é obrigatório" }),
 });
 
 type formSchema = z.infer<typeof formSchema>;
@@ -63,6 +62,8 @@ export function UpdateExpensesForm({
   initialData,
   onSuccess,
 }: Expensesprops) {
+  const queryClient = useQueryClient();
+
   const {
     handleSubmit,
     control,
@@ -84,8 +85,6 @@ export function UpdateExpensesForm({
     },
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   useEffect(() => {
     if (initialData) {
       reset({
@@ -95,41 +94,43 @@ export function UpdateExpensesForm({
             : initialData.type === "Variável"
               ? "Variável"
               : undefined,
+        name: initialData.name ?? "",
         description: initialData.description ?? "",
         value: initialData.value ?? undefined,
       });
     }
   }, [initialData, reset]);
 
-  async function updateExpense(data: formSchema) {
-    if (!initialData?.id) {
-      toast.error("Despesa não localizada");
-    }
-    try {
-      setIsSubmitting(true);
-
-      const payload = {
-        id: initialData?.id,
-        name: initialData?.name ?? undefined,
+  const mutation = useMutation({
+    mutationFn: (data: formSchema) =>
+      UpdateExpenses({
+        id: initialData!.id,
+        name: data.name,
         description: data.description,
         type: data.expenses,
         value: data.value,
         date: new Date(),
-      };
-
-      await UpdateExpensesForm(payload);
-
-      toast.success("Despesa Atualizada com sucesso!");
+      }),
+    onSuccess: () => {
+      toast.success("Despesa atualizada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
       onSuccess?.();
-
       reset();
-    } catch (error) {
-      console.log(error);
+    },
+    onError: () => {
       toast.error("Erro ao atualizar despesa");
-    } finally {
-      setIsSubmitting(false);
+    },
+  });
+
+  const onSubmit = (data: formSchema) => {
+    if (!initialData?.id) {
+      toast.error("Despesa não localizada");
+      return;
     }
-  }
+    mutation.mutate(data);
+  };
+
+  const isSubmitting = mutation.status === "pending";
 
   return (
     <div>
@@ -145,7 +146,6 @@ export function UpdateExpensesForm({
             <div className="flex items-center justify-center">
               {Icon && <Icon />}
             </div>
-
             {trigger}
           </button>
         </DialogTrigger>
@@ -153,13 +153,13 @@ export function UpdateExpensesForm({
         <DialogContent>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          <form onSubmit={handleSubmit(updateExpense)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <span>Tipo de despesa</span>
             <Controller
               name="expenses"
               control={control}
               render={({ field }) => (
-                <Select onValueChange={field.onChange}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecione um item para cadastrar despesa" />
                   </SelectTrigger>
@@ -179,13 +179,11 @@ export function UpdateExpensesForm({
             <div>
               <span className="text-left">Nome da despesa:</span>
               <Input
-                placeholder="Digite o nome da despesa que deseja cadastrar"
-                type="text"
+                placeholder="Digite o nome da despesa"
                 {...register("name")}
-                required
               />
               {errors?.name && (
-                <span className="mb-4 text-left text-sm text-red-500">
+                <span className="text-left text-sm text-red-500">
                   {errors.name.message}
                 </span>
               )}
@@ -194,13 +192,11 @@ export function UpdateExpensesForm({
             <div>
               <span className="text-left">Descrição da despesa:</span>
               <Input
-                placeholder="Digite a descrição despesa que deseja cadastrar"
-                type="text"
+                placeholder="Digite a descrição"
                 {...register("description")}
-                required
               />
               {errors?.description && (
-                <span className="mb-4 text-left text-sm text-red-500">
+                <span className="text-left text-sm text-red-500">
                   {errors.description.message}
                 </span>
               )}
@@ -209,20 +205,19 @@ export function UpdateExpensesForm({
             <div>
               <span className="text-left">Valor:</span>
               <Input
-                placeholder="Digite o valor da despesa"
+                placeholder="Digite o valor"
                 type="number"
                 {...register("value")}
-                required
               />
               {errors?.value && (
-                <span className="mb-4 text-left text-sm text-red-500">
+                <span className="text-left text-sm text-red-500">
                   {errors.value.message}
                 </span>
               )}
             </div>
 
             <Button
-              className="mt-4 cursor-pointer justify-between bg-purple-500 p-4 hover:bg-purple-600"
+              className="mt-4 bg-purple-500 hover:bg-purple-600"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Atualizando..." : "Atualizar Despesa"}
@@ -230,7 +225,6 @@ export function UpdateExpensesForm({
           </form>
         </DialogContent>
       </Dialog>
-         
     </div>
   );
 }

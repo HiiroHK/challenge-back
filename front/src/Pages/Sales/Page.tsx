@@ -23,23 +23,23 @@ import { AllSales } from "@/http/sales/allSales";
 {
   /*Tipo dos daos de vendas*/
 }
-type Vendas = {
+type vendas = {
   id: string;
   name: string;
   email: string;
   phone: string;
-  type: string;
+  modality: string;
   data: string;
-  grossvalue: string;
-  discount: string;
-  deduction: string;
-  finalvalue: string;
+  grossvalue: number;
+  discount: number;
+  deduction: number;
+  finalvalue: number;
 };
 type Filter = "semana" | "mes" | "ano";
 export function Sales() {
   const [selectedFilter, setselectedFilter] = useState<Filter>("mes");
 
-  const [salesList, setsalesList] = useState<Vendas[]>([]);
+  const [salesList, setsalesList] = useState<vendas[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,16 +50,26 @@ export function Sales() {
   const filteredVendas =
     selectedVendas === "all"
       ? salesList
-      : salesList.filter((Vendas) => Vendas.type === selectedVendas);
+      : salesList.filter((Vendas) => Vendas.modality === selectedVendas);
 
   async function loadSales() {
     setLoading(true);
     setError(null);
     try {
       const resp = await AllSales();
-      const mapped: Vendas[] = resp.map((e: any) => ({
+      const mapped: vendas[] = resp.map((e: any) => ({
         id: e.id,
-        name: e.name,
+        modality: e.modalidade === "ONLINE" ? "Online" : "Presencial",
+        name: e.nomeAluno ?? "Venda",
+        email: e.email ?? "",
+        phone: e.telefone ?? "",
+        data: e.dataVenda
+          ? new Date(e.dataVenda).toLocaleDateString("pt-BR")
+          : "",
+        grossvalue: e.valorBruto ?? 0,
+        discount: e.desconto ?? 0,
+        deduction: e.imposto ?? 0,
+        finalvalue: e.valorLiquido ?? 0,
       }));
       setsalesList(mapped);
     } catch (err) {
@@ -133,10 +143,11 @@ export function Sales() {
           {error && <p className="text-red-500">{error}</p>}
           {filteredVendas.map((Vendas) => (
             <CardSales
+              id={Vendas.id}
               name={Vendas.name}
               email={Vendas.email}
               phone={Vendas.phone}
-              type={Vendas.type}
+              type={Vendas.modality}
               data={Vendas.data}
               grossvalue={Vendas.grossvalue}
               discount={Vendas.discount}
